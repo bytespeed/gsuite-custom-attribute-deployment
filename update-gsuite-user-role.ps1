@@ -15,7 +15,7 @@
 	$serviceaccountclientid = Client ID
 	$appemail = "email from service account"
 	$csvfilepath = "C:\Temp\mycsvfilepath.csv"
-	$gs-schemaname = "AppStream_Bytespeed"
+	$schemaname = "AppStream_Bytespeed"
 # Modules
 	$allmodules = get-module -listavailable
 	if ($allmodules.name -notcontains "Configuration") {
@@ -31,10 +31,10 @@
 # Configuration G-Suite
 	set-psgsuiteconfig -configname "GSuite" -p12keypath $p12keypath -appemail $appemail -adminemail $adminemail -domain $domainname -serviceaccountclientid $serviceaccountclientid -customerid $customerid
 # Schema Modifications
-	$userschemaexists = get-gsuserschema | where {$_.displayname -eq $gs-schemaname}
+	$userschemaexists = get-gsuserschema | where {$_.displayname -eq $schemaname}
 	if (-not $userschemaexists) {
-		new-gsuserschema -schemaname $gs-schemaname -fields (add-gsuserschemafield -fieldname "FederationRole" -fieldtype STRING -readaccesstype ADMINS_AND_SELF),(add-gsuserschemafield -fieldname "SessionDuration" -fieldtype STRING -readaccesstype ADMINS_AND_SELF)
-		$userschemaexists = get-gsuserschema | where {$_.displayname -eq $gs-schemaname}
+		new-gsuserschema -schemaname $schemaname -fields (add-gsuserschemafield -fieldname "FederationRole" -fieldtype STRING -readaccesstype ADMINS_AND_SELF),(add-gsuserschemafield -fieldname "SessionDuration" -fieldtype STRING -readaccesstype ADMINS_AND_SELF)
+		$userschemaexists = get-gsuserschema | where {$_.displayname -eq $schemaname}
 	}
 	if ($userschemaexists -and (-not (test-path $csvfilepath))) {
 		$allgsuitegroups = get-gsgroup | select Name,Email,FederationRole,SessionDuration
@@ -54,7 +54,7 @@
 								"FederationRole" = $entry.FederationRole
 								"SessionDuration" = $entry.SessionDuration
 							}
-						} |# out-null
+						} #| out-null
 					}
 				}
 				$groupmemberlist = $null
