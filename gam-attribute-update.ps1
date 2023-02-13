@@ -1,4 +1,4 @@
-# Update the following variables (Note: schema is case sensative)
+# Update the following variables (Note: schema is case sensitive)
 $group_email = 'appstream@bytespeed.com'
 $schema = 'AppStream_Bytespeed.FederationRole'
 $federation_role = 'arn:aws:iam::0000:role/appstream,arn:aws:iam::0000:saml-provider/sso'
